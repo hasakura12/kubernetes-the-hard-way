@@ -4,20 +4,6 @@
 master_nodes=( master-1 master-2 )
 worker_nodes=( worker-1 worker-2 )
 
-function cert::generate_root_cert() {
-  # create private key
-  openssl genrsa -out ca.key 2048
-
-  # Create CSR using the private key
-  openssl req -new -key ca.key -subj "/CN=KUBERNETES-CA" -out ca.csr
-
-  # Self sign the csr using its own private key
-  openssl x509 -req -in ca.csr -signkey ca.key -CAcreateserial  -out ca.crt -days 1000
-
-  >&2echo "Validating root cert..."
-  openssl x509 -in ca.crt -text
-}
-
 function cert::generate_cert() {
   local crt_prefix="${1:?Cert prefix name is required.}"
   local crt_subj="${2:?Subj is required.}"
@@ -45,6 +31,7 @@ function cert::generate_cert() {
   openssl x509 -in ${crt_prefix}.crt -text
 }
 
+# pre-condition: root crt must be created already
 function cert:generate_certs() {
   local admin_crt_name="${1:-admin}"
   local kube_controller_manager_name="${2:-kube-controller-manager}"
@@ -53,8 +40,6 @@ function cert:generate_certs() {
   local kube_apiserver_name="${5:-kube-apiserver}"
   local etcd_server_name="${6:-etcd-server}"
   local service_account_name="${7:-service-account}"
-
-  cert::generate_root_cert
 
   # admin crt
   cert::generate_cert ${admin_crt_name} "/CN=admin/O=system:masters"
