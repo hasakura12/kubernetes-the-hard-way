@@ -109,7 +109,7 @@ function cert::test_certs_exists() {
 
 function cert::distribute_certs_to_master_nodes() {
   for instance in ${master_nodes[@]}; do
-    echo "Distributing certs to ${instance}..."
+    echo "Ditributing certs to ${instance}..."
     scp ca.crt ca.key ${instance}:~/
 
     for crt_name in "$@"; do
@@ -118,7 +118,7 @@ function cert::distribute_certs_to_master_nodes() {
   done
 
   for instance in ${worker_nodes[@]}; do
-    echo "Distributing root cert to ${instance}..."
+    echo "Ditributing root cert to ${instance}..."
     scp ca.crt ${instance}:~/
   done
 }
@@ -177,7 +177,7 @@ function kubeconfig::test_kubeconfig_exists() {
 
 function kubeconfig::distribute_kubeconfig() {
   for instance in ${master_nodes[@]}; do
-    echo "Distributing kubeconfig to ${instance}..."
+    echo "Ditributing kubeconfig to ${instance}..."
 
     for kubeconfig in "$@"; do
       if [ ${kubeconfig} != "kube-proxy" ]; then
@@ -187,7 +187,7 @@ function kubeconfig::distribute_kubeconfig() {
   done
 
   for instance in ${worker_nodes[@]}; do
-    echo "Distributing kubeconfig to ${instance}..."
+    echo "Ditributing kubeconfig to ${instance}..."
 
     for kubeconfig in "$@"; do
       if [ ${kubeconfig} = "kube-proxy" ]; then
@@ -215,7 +215,7 @@ resources:
 EOF
 
   for instance in ${master_nodes[@]}; do
-    echo "Distributing encryption_config.yaml to ${instance}..."
+    echo "Ditributing encryption_config.yaml to ${instance}..."
     scp encryption-config.yaml ${instance}:~/
   done
 }
