@@ -45,7 +45,7 @@ function cert:generate_certs() {
   cert::generate_cert ${admin_crt_name} "/CN=admin/O=system:masters"
 
   # controller-manager crt
-  cert::generate_cert ${kube_controller_manager_name} "/CN=admin/O=system:masters"
+  cert::generate_cert ${kube_controller_manager_name} "/CN=system:kube-controller-manager"
 
   # scheduler crt
   cert::generate_cert ${kube_scheduler_name} "/CN=system:kube-scheduler"
